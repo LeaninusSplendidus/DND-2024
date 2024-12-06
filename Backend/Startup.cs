@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
+using SimplifiedBlaBlaCar.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 namespace SimplifiedBlaBlaCar
 {
     public class Startup
@@ -20,6 +22,11 @@ namespace SimplifiedBlaBlaCar
         {
             services.AddControllers();
             // Add other services like DbContext, Authentication, etc., here
+             services.AddDbContext<ApplicationDbContext>(options =>
+             options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+
+    // Add the password hasher service
+             services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
         }
 
         // Configure middleware pipeline
